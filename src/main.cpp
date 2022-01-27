@@ -4,10 +4,10 @@
 
 int main()
 {
-    firmware_init();
+    Firmware::init();
 }
 
 void loop()
 {
-    firmware_loop();
+    Firmware::update();
 }

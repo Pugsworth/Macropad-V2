@@ -8,12 +8,17 @@ public:
 
     void tick(unsigned long new_time)
     {
-        unsigned long m_deltaTime = new_time - m_time;
+        m_deltaTime = new_time - m_time;
         m_time += m_deltaTime;
     }
 
-    long getDeltaTime()
+    unsigned long getDeltaTime()
     {
         return m_deltaTime;
+    }
+
+    unsigned long getTime()
+    {
+        return m_time;
     }
 };
