@@ -1,4 +1,4 @@
-#include "AButton.h"
+#include "AButton.hpp"
 
 AButton::AButton(uint8_t pinNumber)
 {
@@ -114,6 +114,7 @@ uint8_t AButton::callPinReadFunc()
     if (m_pinReadFunc != nullptr) {
         return m_pinReadFunc(m_pin);
     }
+    return 0;
 }
 
 void AButton::onButtonStateChange(ButtonState state)
@@ -131,7 +132,7 @@ void AButton::setStateChangeCallback(StateChangeCallback state)
 
 void AButton::callTapCallback()
 {
-    if (m_tapcallback != nullptr)
+    if (m_tapCallback != nullptr)
         m_tapCallback();
 }
 
@@ -142,8 +143,8 @@ void AButton::setTapCallback(ActionCallback callback)
 
 void AButton::callHoldCallback()
 {
-    if (m_holdcallback != nullptr)
-        m_holdcallback();
+    if (m_holdCallback != nullptr)
+        m_holdCallback();
 }
 
 void AButton::setHoldCallback(ActionCallback callback)
