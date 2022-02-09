@@ -1,14 +1,13 @@
+#ifndef __KEYPAD_H__
+#define __KEYPAD_H__
+
 #include <Keypad.h>
 
-#define ENCODER_OPTIMIZE_INTERRUPTS
+// #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
 
 #include "KeyBind.hpp"
 #include "AButton.hpp"
-
-
-#ifndef __KEYPAD_H__
-#define __KEYPAD_H__
 
 
 namespace MyKeypad

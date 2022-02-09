@@ -109,12 +109,25 @@ void AButton::setPinReadFunc(PinReadFunc func)
     m_pinReadFunc = func;
 }
 
+void AButton::setPinModeFunc(PinModeFunc func)
+{
+    m_pinModeFunc = func;
+    callPinModeFunc();
+}
+
 uint8_t AButton::callPinReadFunc()
 {
     if (m_pinReadFunc != nullptr) {
         return m_pinReadFunc(m_pin);
     }
-    return 0;
+    return HIGH;
+}
+
+void AButton::callPinModeFunc()
+{
+    if (m_pinModeFunc != nullptr) {
+        return m_pinModeFunc(m_pin);
+    }
 }
 
 void AButton::onButtonStateChange(ButtonState state)

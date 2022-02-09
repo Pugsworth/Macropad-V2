@@ -1,9 +1,10 @@
+#ifndef __ABUTTON_H__
+#define __ABUTTON_H__
+
 // #include <cstdlib>
 // #include <Arduino.h>
 #include <avr/common.h>
 
-#ifndef __ABUTTON_H__
-#define __ABUTTON_H__
 
 enum class DebounceState
 {
@@ -26,6 +27,7 @@ enum class ButtonState
 #define LOW 0x0
 
 typedef uint8_t (*PinReadFunc)(uint8_t pinNumber);
+typedef void (*PinModeFunc)(uint8_t pinNumber);
 typedef void (*StateChangeCallback)(ButtonState state);
 typedef void (*ActionCallback)(void);
 
@@ -37,6 +39,7 @@ class AButton
 {
 private:
     PinReadFunc m_pinReadFunc = nullptr;
+    PinModeFunc m_pinModeFunc = nullptr;
     StateChangeCallback m_stateChangeCallback = nullptr;
     ActionCallback m_tapCallback = nullptr;
     ActionCallback m_holdCallback = nullptr;
@@ -56,12 +59,14 @@ private:
 
     // private methods
     uint8_t callPinReadFunc(); // convienence method to call the PinReadFunc.
+    void callPinModeFunc(); // convienence method to call the PinModeFunc.
     void callTapCallback();
     void callHoldCallback();
     void onButtonStateChange(ButtonState state);
     void updateStateMachine(uint8_t value, unsigned long time);
 
 public:
+    AButton() = default;
     AButton(const uint8_t pinNumber);
     AButton(const uint8_t pinNumber, PinReadFunc func);
 
@@ -71,6 +76,7 @@ public:
     bool hasPressed(); // when the button was pressed on this update
 
     void setPinReadFunc(PinReadFunc func);
+    void setPinModeFunc(PinModeFunc func);
     void setStateChangeCallback(StateChangeCallback state);
     void setTapCallback(ActionCallback callback); // called when a complete "tap" is completed
     void setHoldCallback(ActionCallback callback); // called when a hold is registered

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "mykeypad.hpp"
 #include "util.h"
 
@@ -98,19 +99,35 @@ namespace MyKeypad
     {
         int value = hex2int(keyHex);
 
-        if (btnMode.isHeld())
+        Serial.print("hex: ");
+        Serial.print(keyHex);
+        Serial.print(" value: ");
+        Serial.println(value);
+
+        if (btnMode.isDown() || btnMode.isHeld())
         {
             if (value < 4)
             {
                 return media_keys[value];
             }
+            else
+            {
+                int layer_selection = value - 4;
+                layer = layer_selection;
+
+                Serial.print("Changing layer to: ");
+                Serial.println(layer);
+
+                return 0;
+            }
         }
+
 
         return keymap[layer][value];
     }
 
 
-    long left_encoder_value = -999;
+    long left_encoder_value = 0;
     Encoder leftEncoder(10, 16); // TODO: Magic numbers!
     // extern Encoder rightEncoder(14, 15);
 
@@ -137,6 +154,15 @@ namespace MyKeypad
         Consumer.begin();
         BootKeyboard.begin();
 
+        btnMode.setPinModeFunc([](uint8_t pin) {
+            pinMode(pin, INPUT_PULLUP);
+        });
+
+        btnMode.setStateChangeCallback([](ButtonState state){
+            // Serial.print("[Keypad](StateChangeCallback) ");
+            // Serial.println((int)state);
+        });
+
         key_matrix.addEventListener([](KeypadEvent key)
         {
             if (key_matrix.getState() == PRESSED)
@@ -145,6 +171,10 @@ namespace MyKeypad
                 Serial.println(layer);
 
                 KeyBind keybind = getBindForKey(key);
+
+                // TODO: This is a hack to deal with changing layers
+                if (keybind.key == 0)
+                    return;
 
                 Serial.println(keybind.key);
 
@@ -165,7 +195,14 @@ namespace MyKeypad
                         }
                     }
 
-                    BootKeyboard.write(keybind.key);
+                    if (keybind.type == KeyType::Consumer)
+                    {
+                        Consumer.write((ConsumerKeycode)keybind.key);
+                    }
+                    else
+                    {
+                        BootKeyboard.write(keybind.key);
+                    }
 
                     if (is_multi)
                         BootKeyboard.releaseAll();
@@ -181,5 +218,7 @@ namespace MyKeypad
     void Update(unsigned long time)
     {
         btnMode.update(time);
+        readEncoder();
+        key_matrix.getKeys();
     }
 }

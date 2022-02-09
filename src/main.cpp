@@ -6,7 +6,7 @@
 
 TimeKeeper g_timekeeper;
 
-int main()
+void setup()
 {
     Firmware::Init();
 }

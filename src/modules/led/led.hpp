@@ -14,7 +14,7 @@ namespace LedModule
     {
         uint8_t DataPin;
         uint8_t LedCount;
-        CRGB Leds[LED_COUNT];
+        CRGB *Leds;
         // FastLEDSetupData_t(uint8_t pin, uint8_t ledcount, CRGB leds[]) : DataPin(pin), LedCount(ledcount), Leds(leds) {}
     };
 

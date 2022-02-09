@@ -7,7 +7,7 @@ namespace LedModule
     FastLEDSetupData_t fastLEDData = {
         /*.DataPin*/    PIN_LED_DATA,
         /*.LedCount*/   LED_COUNT,
-        /*.Leds*/       &leds
+        /*.Leds*/       leds
     };
 
     struct FastLEDSetupData_t Init()
@@ -16,6 +16,22 @@ namespace LedModule
         FastLED.setMaxPowerInVoltsAndMilliamps(5, 500);
         FastLED.setBrightness(200);
         FastLED.clear();
+
+        double h = (double)rand() / (double)RAND_MAX;
+
+        Serial.println(h);
+
+        CHSV hsv;
+        hsv.hue = (int)(h * 255.0f) & 0xFF;
+        hsv.sat = 200;
+        hsv.val = 200;
+        CRGB c;
+
+        Serial.println(hsv.hue);
+
+        hsv2rgb_rainbow(hsv, c);
+
+        setall(leds, LED_COUNT, c.r, c.g, c.b);
 
         return fastLEDData;
     }

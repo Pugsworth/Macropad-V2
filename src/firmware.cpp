@@ -1,5 +1,5 @@
-#include "firmware.hpp"
 #include <Arduino.h>
+#include "firmware.hpp"
 #include "modules/led/led.hpp"
 #include "modules/mykeypad/mykeypad.hpp"
 
@@ -8,8 +8,14 @@
 void Firmware::InitSerial()
 {
     Serial.begin(9600);
+    delay(500);
     Serial.println("Bonjour!");
+    delay(500);
 }
+
+
+
+
 
 
 ////
@@ -19,18 +25,19 @@ void Firmware::InitSerial()
 void Firmware::Init()
 {
     InitSerial();
-    // MyKeypad::InitKeyboard();
 
-    // struct LedModule::FastLEDSetupData_t fastLEDData;
-    // fastLEDData = LedModule::Init();
+    int seed = analogRead(0);
+    Serial.print("Initializing random with seed: ");
+    Serial.println(seed);
+    srand(seed);
+
+    MyKeypad::InitKeyboard();
+
+    struct LedModule::FastLEDSetupData_t fastLEDData;
+    fastLEDData = LedModule::Init();
 }
 
 void Firmware::Update(unsigned long time)
 {
-    // readEncoder()
-    // update global time
-    // btnMode.update(g_time)
-    // key_matrix.keyKeys()
-
-    // MyKeypad::Update(time);
+    MyKeypad::Update(time);
 }
