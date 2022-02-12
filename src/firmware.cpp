@@ -2,7 +2,7 @@
 #include "firmware.hpp"
 #include "modules/led/led.hpp"
 #include "modules/mykeypad/mykeypad.hpp"
-
+#include "modules/display/display.hpp"
 
 
 void Firmware::InitSerial()
@@ -12,7 +12,6 @@ void Firmware::InitSerial()
     Serial.println("Bonjour!");
     delay(500);
 }
-
 
 
 
@@ -31,13 +30,17 @@ void Firmware::Init()
     Serial.println(seed);
     srand(seed);
 
-    MyKeypad::InitKeyboard();
+    Display::Init();
 
-    struct LedModule::FastLEDSetupData_t fastLEDData;
-    fastLEDData = LedModule::Init();
+    // MyKeypad::InitKeyboard();
+
+    // struct LedModule::FastLEDSetupData_t fastLEDData;
+    // fastLEDData = LedModule::Init();
 }
 
 void Firmware::Update(unsigned long time)
 {
-    MyKeypad::Update(time);
+    // MyKeypad::Update(time);
+    Display::Update();
+    Display::DrawLayer(MyKeypad::layer);
 }
