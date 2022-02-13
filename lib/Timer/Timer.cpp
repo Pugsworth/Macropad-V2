@@ -1,8 +1,8 @@
 #include "Timer.hpp"
 
-bool Timer::Elapsed(long time)
+bool Timer::Elapsed(long ticksToAdd)
 {
-    m_time -= time;
+    m_time -= ticksToAdd;
 
     if (m_time <= 0) {
         m_time = m_updateRate;
