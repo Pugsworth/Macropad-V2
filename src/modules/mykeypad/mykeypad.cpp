@@ -27,6 +27,7 @@ namespace MyKeypad
     uint8_t rowPins[ROWS] = {4, 5, A3};
     uint8_t colPins[COLS] = {6, 7, 8, 9};
 
+    Callback layerChange(1);
     uint8_t layer = 0;
 
     // When a physical button is pressed, the keymap sends one of these corrisponding to which was pressed
@@ -115,6 +116,8 @@ namespace MyKeypad
                 int layer_selection = value - 4;
                 layer = layer_selection;
 
+                onLayerChange(layer);
+
                 Serial.print("Changing layer to: ");
                 Serial.println(layer);
 
@@ -147,6 +150,11 @@ namespace MyKeypad
 
             left_encoder_value = position;
         }
+    }
+
+    void onLayerChange(uint8_t layer)
+    {
+        layerChange.Invoke(layer);
     }
 
     void InitKeyboard()

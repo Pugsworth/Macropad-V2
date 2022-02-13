@@ -32,7 +32,10 @@ void Firmware::Init()
 
     Display::Init();
 
-    // MyKeypad::InitKeyboard();
+    MyKeypad::InitKeyboard();
+    MyKeypad::layerChange += [](uint8_t layer){
+        Display::DrawLayer(layer);
+    };
 
     // struct LedModule::FastLEDSetupData_t fastLEDData;
     // fastLEDData = LedModule::Init();
@@ -40,7 +43,6 @@ void Firmware::Init()
 
 void Firmware::Update(unsigned long time)
 {
-    // MyKeypad::Update(time);
-    Display::Update();
-    Display::DrawLayer(MyKeypad::layer);
+    MyKeypad::Update(time);
+    Display::Update(time);
 }

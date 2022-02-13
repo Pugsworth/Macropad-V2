@@ -8,6 +8,7 @@
 
 #include "KeyBind.hpp"
 #include "AButton.hpp"
+#include "Callback.hpp"
 
 
 namespace MyKeypad
@@ -23,6 +24,7 @@ namespace MyKeypad
     extern uint8_t rowPins[ROWS];
     extern uint8_t colPins[COLS];
 
+    extern Callback layerChange;
     extern uint8_t layer;
 
     // When a physical button is pressed, the keymap sends one of these corrisponding to which was pressed
@@ -47,6 +49,8 @@ namespace MyKeypad
     KeyBind getBindForKey(char keyHex);
 
     void readEncoder();
+
+    void onLayerChange(uint8_t layer);
 
     void InitKeyboard();
 

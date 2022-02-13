@@ -5,7 +5,8 @@
 namespace Display
 {
     void Init();
-    void Update();
+    void Update(unsigned long time);
+    void _invert();
     void DrawLayer(const int layer);
 }
 
